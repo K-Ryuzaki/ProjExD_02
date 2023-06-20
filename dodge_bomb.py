@@ -17,6 +17,21 @@ delta = {
     pg.K_LEFT : (-5,0),
     pg.K_RIGHT : (+5,0),
 }
+kk_img = pg.image.load("ex02/fig/3.png")
+kk_img1 = pg.transform.flip(kk_img,True,False)
+muki = {
+    (0,0) : kk_img1,
+    (+5,0) : kk_img1,
+    (+5,-5) : pg.transform.rotozoom(kk_img1,45,1.0),
+    (0,-5) :  pg.transform.rotozoom(kk_img1,90,1.0),
+    (-5,-5) : pg.transform.rotozoom(kk_img,-45,1.0),
+    (-5,0) :kk_img,
+    (-5,+5) : pg.transform.rotozoom(kk_img,45,1.0),
+    (0,+5) : pg.transform.rotozoom(kk_img1,-90,1.0),
+    (+5,+5) : pg.transform.rotozoom(kk_img1,-45,1.0)
+    }
+
+
 
 
 
@@ -32,6 +47,7 @@ def main():
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_rct= kk_img.get_rect()
     kk_rct.center = 900,400
+
     bb = pg.Surface((20,20))
     pg.draw.circle(bb,(255,0,0),(10,10),10)
     bb.set_colorkey((0,0,0))
@@ -42,7 +58,8 @@ def main():
     vx, vy = +5 ,+5
     clock = pg.time.Clock()
     tmr = 0
-    
+
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
@@ -50,16 +67,18 @@ def main():
         if kk_rct.colliderect(bb_rct):
             print("ゲームオーバー")
             return
+        
         key_lst = pg.key.get_pressed()
         sum_mv = [0,0]
         for k, mv in delta.items():
             if key_lst[k]:
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
+        kk_img = muki[tuple(sum_mv)]
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
-
+        
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rct)
         screen.blit(bb,bb_rct)
