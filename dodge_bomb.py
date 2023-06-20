@@ -30,11 +30,12 @@ muki = {
     (0,+5) : pg.transform.rotozoom(kk_img1,-90,1.0),
     (+5,+5) : pg.transform.rotozoom(kk_img1,-45,1.0)
     }
-
-
-
-
-
+accs = [a for a in range(1,11)]#加速度
+for r in range(1,11):
+    bb_img = pg.Surface((20*r, 20*r))
+    pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+    bb_imgs.append(bb_img)
+#空欄修正済み
 
 def main():
     """
