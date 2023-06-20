@@ -2,6 +2,13 @@ import sys
 import pygame as pg
 import random
 
+def check_bound(rect):
+    yoko,tate = True, True
+    if rect.left < 0 or WIDTH < rect.right:
+        yoko = False
+    if rect.top <0 or HEIGHT < rect.bottom:
+        tate = False
+    return yoko, tate
 
 WIDTH, HEIGHT = 1600, 900
 delta = {
@@ -47,11 +54,18 @@ def main():
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
         kk_rct.move_ip(sum_mv)
+        if check_bound(kk_rct) != (True, True):
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rct)
         screen.blit(bb,bb_rct)
         bb_rct.move_ip(vx,vy)
+        yoko, tate = check_bound(bb_rct)
+        if not yoko:
+            vx *= -1
+        if not tate:
+            vy *= -1
         screen.blit(bb,bb_rct)
         pg.display.update()
         tmr += 1
